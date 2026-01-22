@@ -1,0 +1,70 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Publish
+      run: dotnet publish -c Release -o publish
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: media-cli-win-x64
+        path: publish/media-cli.exe
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Publish
+      run: dotnet publish -c Release -o publish
+
+    - name: Create ZIP
+      run: Compress-Archive -Path publish\media-cli.exe -DestinationPath media-cli-win-x64.zip
+
+    - name: Get version from tag
+      id: get_version
+      shell: bash
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          media-cli-win-x64.zip
+          publish/media-cli.exe
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
