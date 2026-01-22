@@ -17,9 +17,9 @@ A Windows command-line tool for controlling media playback and system volume.
 2. Place it in a directory of your choice
 3. Optionally add it to your PATH
 
-### With Winget (coming soon)
+### With Winget
 ```bash
-winget install Louisjrdev.MediaCli
+winget install louisjrdev.media-cli
 ```
 
 ## Usage
