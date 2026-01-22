@@ -13,13 +13,13 @@ A Windows command-line tool for controlling media playback and system volume.
 ## Installation
 
 ### From Release
-1. Download `media-cli.exe` from the [latest release](https://github.com/YOUR_USERNAME/media-cli/releases)
+1. Download `media-cli.exe` from the [latest release](https://github.com/louisjrdev/media-cli/releases)
 2. Place it in a directory of your choice
 3. Optionally add it to your PATH
 
 ### With Winget (coming soon)
 ```bash
-winget install YourPublisher.MediaCli
+winget install Louisjrdev.MediaCli
 ```
 
 ## Usage
@@ -93,7 +93,7 @@ Requirements:
 - Windows 10/11
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/media-cli.git
+git clone https://github.com/louisjrdev/media-cli.git
 cd media-cli
 dotnet publish -c Release -o publish
 ```
